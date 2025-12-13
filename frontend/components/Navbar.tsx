@@ -1,0 +1,128 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Menu, X, Zap } from "lucide-react";
+import { Orbitron, Rajdhani } from "next/font/google";
+
+/* ---------- GOOGLE FONTS ---------- */
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+});
+
+const rajdhani = Rajdhani({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/problems", label: "Problems" },
+  ];
+
+  return (
+    <nav
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-black/80 backdrop-blur-xl border-b border-cyan-500/40"
+          : "bg-black/60 backdrop-blur border-b border-gray-700"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* LOGO */}
+          <a
+            href="/"
+            className={`relative flex items-center gap-2 group ${orbitron.className}`}
+          >
+            <span className="text-sm sm:text-base font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 group-hover:from-purple-400 group-hover:to-cyan-400 transition-all">
+              SOLVATHON'26
+            </span>
+            {/*<span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-cyan-400 to-purple-400 group-hover:w-full transition-all duration-300" />*/}
+          </a>
+
+          {/* DESKTOP NAV */}
+          <div className={`hidden md:flex items-center gap-1 ${rajdhani.className}`}>
+            {navLinks.slice(0, 2).map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="relative px-4 py-2 text-gray-300 hover:text-cyan-400 transition-colors group"
+              >
+                <span className="relative z-10">{link.label}</span>
+                <span className="absolute inset-0 border border-transparent group-hover:border-cyan-500/40 transition-all" />
+                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:to-purple-500/10 transition-all" />
+              </a>
+            ))}
+
+            <a
+              href="/register"
+              className={`text-white ml-2 px-6 py-2 text-sm font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-purple-500 hover:scale-105 transition relative overflow-hidden ${orbitron.className}`}
+            >
+              <span className="text-white absolute inset-0 bg-gradient-to-r from-purple-500 to-cyan-500 opacity-0 hover:opacity-100 transition-opacity" />
+              <span className="relative">Register</span>
+            </a>
+          </div>
+
+          {/* HAMBURGER */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden relative p-2 text-purple-400 hover:text-cyan-400 transition"
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* MOBILE MENU */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-500 ${
+          isOpen ? "max-h-96 border-t border-cyan-500/30" : "max-h-0"
+        }`}
+      >
+        <div
+          className={`px-4 py-4 space-y-2 bg-black/90 backdrop-blur-xl ${rajdhani.className}`}
+        >
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setIsOpen(false)}
+              className="block relative px-4 py-3 text-gray-300 hover:text-cyan-400 border border-gray-700 hover:border-cyan-500/40 transition group"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-cyan-400 opacity-0 group-hover:opacity-100 transition" />
+                {link.label}
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:to-purple-500/10 transition" />
+            </a>
+          ))}
+
+          <a
+            href="/register"
+            onClick={() => setIsOpen(false)}
+            className={`text-white block mt-4 px-4 py-3 text-center font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-purple-500 hover:scale-[1.02] transition ${orbitron.className}`}
+          >
+            Register
+          </a>
+        </div>
+      </div>
+
+      {/* GLOW LINE */}
+      {scrolled && (
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse" />
+      )}
+    </nav>
+  );
+}

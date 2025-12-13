@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: linear-gradient(to bottom, #000 0%, #0a001f 100%);
+  overflow-x: hidden;
+}
+
+.neon-glow {
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+}
+
+.neon-pink-glow {
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+}
+
+.glitch {
+  animation: glitch 2s infinite;
+}
+
+@keyframes glitch {
+  0% { text-shadow: 0.05em 0 0 #00fffc, -0.05em 0 0 #ff00fc; }
+  14% { text-shadow: 0.05em 0 0 #00fffc, -0.05em 0 0 #ff00fc; }
+  15% { text-shadow: -0.05em 0 0 #00fffc, 0.05em 0 0 #ff00fc; }
+  49% { text-shadow: -0.05em 0 0 #00fffc, 0.05em 0 0 #ff00fc; }
+  50% { text-shadow: 0.025em 0.05em 0 #00fffc, -0.025em -0.05em 0 #ff00fc; }
+  99% { text-shadow: 0.025em 0.05em 0 #00fffc, -0.025em -0.05em 0 #ff00fc; }
+  100% { text-shadow: -0.025em 0 0 #00fffc, 0.025em 0 0 #ff00fc; }
+}
+
+.hover-neon:hover {
+  box-shadow: 0 0 20px #00ffff;
+  transition: all 0.3s;
+}
