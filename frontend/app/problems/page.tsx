@@ -54,18 +54,30 @@ export default function Problems() {
   ];
 
   return (
-    <div className={`min-h-screen bg-black text-white ${rajdhani.className}`}>
-      {/* BACKGROUND */}
+    <div className={`min-h-screen bg-black text-white ${rajdhani.className} relative overflow-hidden`}>
+      {/* BACKGROUND GRID */}
+      <div className="fixed inset-0 pointer-events-none opacity-10" style={{
+        backgroundImage: `
+          linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px)
+        `,
+        backgroundSize: "50px 50px"
+      }} />
+      
+      {/* BACKGROUND GLOWS */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-16 left-1/4 w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-cyan-500/10 blur-3xl rounded-full animate-pulse" />
-        <div className="absolute bottom-16 right-1/4 w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-purple-500/10 blur-3xl rounded-full animate-pulse delay-1000" />
+        <div className="absolute top-16 left-1/4 w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-cyan-500/5 blur-3xl rounded-full" />
+        <div className="absolute bottom-16 right-1/4 w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-blue-500/5 blur-3xl rounded-full" />
       </div>
 
       <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {/* HEADER */}
         <div className="text-center mb-10 sm:mb-14 space-y-4">
           <h1
-            className={`${orbitron.className} text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400`}
+            className={`${orbitron.className} text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400`}
+            style={{
+              textShadow: "0 0 20px rgba(34, 211, 238, 0.4), 0 0 30px rgba(59, 130, 246, 0.2)",
+            }}
           >
             Problem Statements
           </h1>

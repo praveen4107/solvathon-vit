@@ -147,3 +147,70 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Cyberpunk Glitch Animation */
+@keyframes glitch-anim {
+  0%, 100% {
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(0);
+    opacity: 0;
+  }
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(-2px, 2px);
+    opacity: 0.3;
+  }
+  40% {
+    clip-path: inset(43% 0 1% 0);
+    transform: translate(-2px, -2px);
+    opacity: 0.3;
+  }
+  60% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(2px, 0);
+    opacity: 0.2;
+  }
+  80% {
+    clip-path: inset(54% 0 7% 0);
+    transform: translate(-1px, 2px);
+    opacity: 0.2;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+  }
+}
+
+/* Style select option highlighting */
+option {
+  background-color: #000;
+  color: #22d3ee;
+}
+
+option:checked {
+  background: linear-gradient(#22d3ee, #22d3ee);
+  background-color: #0891b2;
+  color: #000;
+}
+
+/* Style select elements */
+select {
+  border-color: rgba(34, 211, 238, 0.4) !important;
+}
+
+select:focus {
+  border-color: rgba(34, 211, 238, 1) !important;
+  outline: none !important;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.2) !important;
+}
+
+select:hover {
+  border-color: rgba(34, 211, 238, 0.6) !important;
+}

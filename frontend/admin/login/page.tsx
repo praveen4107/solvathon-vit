@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { setToken } from "../utils/auth";
+import { setToken } from "../../app/admin/utils/auth";
 const API = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export default function AdminLogin() {
@@ -34,12 +34,12 @@ export default function AdminLogin() {
     <main className="min-h-screen flex items-center justify-center bg-neutral-950 text-white p-6">
       <div className="w-full max-w-sm rounded-md border border-gray-700 bg-neutral-900 p-5">
         <h1 className="text-xl font-semibold">Admin Login</h1>
-        <p className="text-gray-400 text-sm mb-4"></p>
+        <p className="text-gray-400 text-sm mb-4">Enter your credentials</p>
         <div className="space-y-4">
           <div>
             <label className="block text-sm text-gray-300 mb-1">Username</label>
             <input
-              placeholder=""
+              placeholder="admin"
               onChange={(e) => setUsername(e.target.value)}
               className="w-full bg-neutral-950 border border-gray-700 rounded-md px-3 py-2 text-sm focus:outline-none focus:border-gray-500"
             />
@@ -49,7 +49,7 @@ export default function AdminLogin() {
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder=""
+                placeholder="••••••••"
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-neutral-950 border border-gray-700 rounded-md px-3 py-2 pr-16 text-sm focus:outline-none focus:border-gray-500"
               />

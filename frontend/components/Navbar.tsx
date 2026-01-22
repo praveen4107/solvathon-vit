@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, Zap } from "lucide-react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { Orbitron, Rajdhani } from "next/font/google";
 
 /* ---------- GOOGLE FONTS ---------- */
@@ -34,8 +35,8 @@ export default function Navbar() {
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-black/80 backdrop-blur-xl border-b border-cyan-500/40"
-          : "bg-black/60 backdrop-blur border-b border-gray-700"
+          ? "bg-black/80 backdrop-blur-xl border-b border-cyan-500/30"
+          : "bg-black/60 backdrop-blur border-b border-gray-800"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,15 +46,24 @@ export default function Navbar() {
             href="/"
             className={`relative flex items-center gap-2 group ${orbitron.className}`}
           >
-            <span className="text-sm sm:text-base font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 group-hover:from-purple-400 group-hover:to-cyan-400 transition-all">
-              SOLVATHON'26
-            </span>
-            {/*<span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-cyan-400 to-purple-400 group-hover:w-full transition-all duration-300" />*/}
+            <span
+  className="
+    text-sm sm:text-base font-extrabold tracking-wider
+    text-transparent bg-clip-text
+    bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400
+    bg-[length:200%_200%] bg-left
+    transition-[background-position] duration-700 ease-out
+    group-hover:bg-right
+  "
+>
+  SOLVATHON'26
+</span>
+
           </a>
 
           {/* DESKTOP NAV */}
           <div className={`hidden md:flex items-center gap-1 ${rajdhani.className}`}>
-            {navLinks.slice(0, 2).map((link) => (
+            {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -61,26 +71,36 @@ export default function Navbar() {
               >
                 <span className="relative z-10">{link.label}</span>
                 <span className="absolute inset-0 border border-transparent group-hover:border-cyan-500/40 transition-all" />
-                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:to-purple-500/10 transition-all" />
+                <span className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 transition-all" />
               </a>
             ))}
 
+            {/* REGISTER */}
             <a
-              href="/register"
-              className={`text-white ml-2 px-6 py-2 text-sm font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-purple-500 hover:scale-105 transition relative overflow-hidden ${orbitron.className}`}
-            >
-              <span className="text-white absolute inset-0 bg-gradient-to-r from-purple-500 to-cyan-500 opacity-0 hover:opacity-100 transition-opacity" />
-              <span className="relative">Register</span>
-            </a>
+  href="/register"
+  className={`
+    ml-2 px-6 py-2 text-sm font-bold uppercase tracking-wider text-black
+    relative overflow-hidden
+    bg-gradient-to-r from-cyan-500 via-blue-500 to-cyan-500
+    bg-[length:200%_200%] bg-left
+    transition-[background-position,box-shadow] duration-500 ease-out
+    hover:bg-right
+    hover:shadow-[0_0_16px_rgba(34,211,238,0.4)]
+    ${orbitron.className}
+  `}
+>
+  Register
+</a>
+
           </div>
 
           {/* HAMBURGER */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden relative p-2 text-purple-400 hover:text-cyan-400 transition"
+            className="md:hidden p-2 text-cyan-400 hover:text-blue-400 transition"
             aria-label="Toggle menu"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <FontAwesomeIcon icon={faXmark} className="w-6 h-6" /> : <FontAwesomeIcon icon={faBars} className="w-6 h-6" />}
           </button>
         </div>
       </div>
@@ -105,14 +125,14 @@ export default function Navbar() {
                 <span className="w-1.5 h-1.5 bg-cyan-400 opacity-0 group-hover:opacity-100 transition" />
                 {link.label}
               </span>
-              <span className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:to-purple-500/10 transition" />
+              <span className="absolute inset-0 bg-gradient-to-r from-amber-500/0 to-yellow-500/0 group-hover:from-amber-500/10 group-hover:to-yellow-500/10 transition" />
             </a>
           ))}
 
           <a
             href="/register"
             onClick={() => setIsOpen(false)}
-            className={`text-white block mt-4 px-4 py-3 text-center font-bold uppercase tracking-wider bg-gradient-to-r from-cyan-500 to-purple-500 hover:scale-[1.02] transition ${orbitron.className}`}
+            className={`block mt-4 px-4 py-3 text-center font-bold uppercase tracking-wider text-black bg-gradient-to-r from-cyan-500 to-blue-500 hover:scale-[1.02] transition ${orbitron.className}`}
           >
             Register
           </a>
@@ -121,7 +141,7 @@ export default function Navbar() {
 
       {/* GLOW LINE */}
       {scrolled && (
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />
       )}
     </nav>
   );

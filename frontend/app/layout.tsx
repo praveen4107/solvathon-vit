@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import type { Metadata } from "next";
 import { Orbitron, Rajdhani } from "next/font/google";
 import "./globals.css";
@@ -11,22 +14,20 @@ const rajdhani = Rajdhani({
   variable: "--font-rajdhani" 
 });
 
-export const metadata: Metadata = {
-  title: "SOLVATHON'26 - VIT Chennai Hostel Hackathon",
-  description: "Inter-hostel hackathon at VIT Chennai - January 15, 2026",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isAdmin = pathname.startsWith("/admin");
+
   return (
     <html lang="en" className="scroll-smooth">
-      <body suppressHydrationWarning className={`${orbitron.variable} ${rajdhani.variable} font-rajdhani bg-black text-cyan-300 min-h-screen flex flex-col`}>
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body suppressHydrationWarning className={`${orbitron.variable} ${rajdhani.variable} font-rajdhani ${isAdmin ? "bg-neutral-950" : "bg-black text-cyan-300 min-h-screen flex flex-col"}`}>
+        {!isAdmin && <Navbar />}
+        <main className={isAdmin ? "" : "flex-1"}>{children}</main>
+        {!isAdmin && <Footer />}
       </body>
     </html>
   );

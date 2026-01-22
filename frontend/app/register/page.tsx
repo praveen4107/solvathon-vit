@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { User, Mail, Phone, Home, Users, Rocket, ChevronDown } from "lucide-react";
+import { User, Mail, Phone, Home, Users, Rocket, ChevronDown, Crown } from "lucide-react";
 import Card from "../../components/Card";
 
 import { Orbitron, Rajdhani } from "next/font/google";
@@ -26,10 +26,10 @@ type Member = {
   phone: string;
   hostel_block: string;
   room_no: string;
+  is_leader: boolean;
 };
 
 export default function RegisterPage() {
-  const [mode, setMode] = useState<"individual" | "team">("team");
   const [teamName, setTeamName] = useState("");
   const [memberCount, setMemberCount] = useState<number>(2);
 
@@ -40,6 +40,7 @@ export default function RegisterPage() {
     phone: "",
     hostel_block: "",
     room_no: "",
+    is_leader: true,
   });
 
   const [members, setMembers] = useState<Member[]>([
@@ -50,6 +51,7 @@ export default function RegisterPage() {
       phone: "",
       hostel_block: "",
       room_no: "",
+      is_leader: false,
     },
   ]);
 
@@ -58,11 +60,11 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState(false);
 
   /* ---------- INPUT HANDLER ---------- */
-  const updateLeader = (key: keyof Member, value: string) => {
+  const updateLeader = (key: keyof Member, value: string | boolean) => {
     setLeader((prev) => ({ ...prev, [key]: value }));
   };
 
-  const updateMember = (index: number, key: keyof Member, value: string) => {
+  const updateMember = (index: number, key: keyof Member, value: string | boolean) => {
     setMembers((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [key]: value };
@@ -81,6 +83,7 @@ export default function RegisterPage() {
         phone: "",
         hostel_block: "",
         room_no: "",
+        is_leader: false,
       };
     });
     setMembers(newMembers);
@@ -94,20 +97,12 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      let endpoint = "";
-      let payload: any = {};
-
-      if (mode === "individual") {
-        endpoint = "/api/register/individual/";
-        payload = leader;
-      } else {
-        endpoint = "/api/register/team/";
-        payload = {
-          team_name: teamName,
-          hostel_block: leader.hostel_block,
-          members: [leader, ...members],
-        };
-      }
+      const endpoint = "/api/register/team/";
+      const payload = {
+        team_name: teamName,
+        hostel_block: leader.hostel_block,
+        members: [leader, ...members],
+      };
 
       const res = await fetch(`${API_BASE}${endpoint}`, {
         method: "POST",
@@ -131,7 +126,7 @@ export default function RegisterPage() {
           } else if (typeof data.errors === "object") {
             // Handle nested member errors (members[i].fieldName[0])
             if (data.errors.members && Array.isArray(data.errors.members)) {
-              const memberErrors = [];
+              const memberErrors: string[] = [];
               
               // Check if it's a direct string error (e.g., "All team members must belong to the same hostel block.")
               if (data.errors.members.some((item: any) => typeof item === "string")) {
@@ -189,6 +184,7 @@ export default function RegisterPage() {
         phone: "",
         hostel_block: "",
         room_no: "",
+        is_leader: true,
       });
       setMembers([
         {
@@ -198,6 +194,7 @@ export default function RegisterPage() {
           phone: "",
           hostel_block: "",
           room_no: "",
+          is_leader: false,
         },
       ]);
       setLoading(false);
@@ -209,122 +206,151 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className={`min-h-screen bg-black text-white ${rajdhani.className}`}>
-      {/* BACKGROUND */}
+    <div className={`min-h-screen bg-black text-white ${rajdhani.className} relative overflow-hidden`}>
+      {/* BACKGROUND GRID */}
+      <div className="fixed inset-0 pointer-events-none opacity-10" style={{
+        backgroundImage: `
+          linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px)
+        `,
+        backgroundSize: "50px 50px"
+      }} />
+      
+      {/* BACKGROUND GLOWS */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-20 left-1/4 w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-cyan-500/10 blur-3xl rounded-full animate-pulse" />
-        <div className="absolute bottom-20 right-1/4 w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-purple-500/10 blur-3xl rounded-full animate-pulse delay-1000" />
+        <div className="absolute top-20 left-1/4 w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-cyan-500/5 blur-3xl rounded-full" />
+        <div className="absolute bottom-20 right-1/4 w-60 h-60 sm:w-72 sm:h-72 md:w-96 md:h-96 bg-blue-500/5 blur-3xl rounded-full" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         {/* HEADER */}
         <div className="text-center mb-8 sm:mb-10 space-y-3 sm:space-y-4">
           <h1
-            className={`${orbitron.className} text-2xl sm:text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 leading-[1.25] pb-1`}
+            className={`${orbitron.className} text-2xl sm:text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 leading-[1.25] pb-1`}
+            style={{
+              textShadow: "0 0 20px rgba(34, 211, 238, 0.4), 0 0 30px rgba(59, 130, 246, 0.2)",
+            }}
           >
             Register for SOLVATHON'26
           </h1>
           <p className="text-gray-400 text-sm sm:text-base">
-            Inter-Hostel Hackathon · VIT Chennai Hostels
+            Inter-Hostel Team Hackathon · VIT Chennai Hostels
           </p>
         </div>
 
-        {/* MODE TOGGLE */}
-        <div className="flex justify-center mb-8 sm:mb-10">
-          <div className="flex border border-cyan-500/40">
-            {["team", "individual"].map((m) => (
-              <button
-                key={m}
-                onClick={() => setMode(m as any)}
-                className={`px-4 py-2 sm:px-6 sm:py-2 uppercase tracking-wide text-xs sm:text-sm transition ${
-                  mode === m
-                    ? "bg-gradient-to-r from-cyan-500 to-purple-500 font-bold"
-                    : "hover:bg-white/5 text-gray-300"
-                }`}
-              >
-                {m}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* FORM */}
-        <Card title={mode === "team" ? "Team Registration" : "Individual Registration"}>
+        <Card title="Team Registration">
           <form className="space-y-6 sm:space-y-8" onSubmit={handleSubmit}>
-            {mode === "team" && (
-              <>
-                {/* TEAM NAME */}
+            {/* TEAM NAME */}
+            <div>
+              <label className="text-xs sm:text-sm text-gray-300 mb-1 block font-semibold">Team Name</label>
+              <div className="relative">
+                <Users className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                <input
+                  value={teamName}
+                  onChange={(e) => setTeamName(e.target.value)}
+                  className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                  placeholder="Enter your team name (unique)"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* MEMBER COUNT SELECTOR */}
+            <div>
+              <label className="text-xs sm:text-sm text-gray-300 mb-1 block font-semibold">
+                Number of Team Members
+              </label>
+              <div className="relative">
+                <Users className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 pointer-events-none" />
+                <select
+                  value={memberCount}
+                  onChange={(e) => handleMemberCountChange(Number(e.target.value))}
+                  className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base appearance-none"
+                >
+                  <option value={2}>2 members (1 Leader + 1 Member)</option>
+                  <option value={3}>3 members (1 Leader + 2 Members)</option>
+                  <option value={4}>4 members (1 Leader + 3 Members)</option>
+                  <option value={5}>5 members (1 Leader + 4 Members)</option>
+                  <option value={6}>6 members (1 Leader + 5 Members)</option>
+                </select>
+                <ChevronDown className="absolute right-3 top-3.5 w-4 h-4 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+
+            {/* TEAM LEADER SECTION */}
+            <div>
+              <h3 className="text-sm md:text-base font-semibold text-cyan-300 mb-4 flex items-center gap-2">
+                <Crown className="w-4 h-4 text-blue-400" />
+                Team Leader Details
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <label className="text-xs sm:text-sm text-gray-300 mb-1 block font-semibold">Team Name</label>
+                  <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Registration Number</label>
                   <div className="relative">
-                    <Users className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                    <User className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
                     <input
-                      value={teamName}
-                      onChange={(e) => setTeamName(e.target.value)}
-                      className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-purple-500 transition text-sm sm:text-base"
-                      placeholder="Enter team name"
+                      value={leader.registration_number}
+                      onChange={(e) => updateLeader("registration_number", e.target.value)}
+                      maxLength={9}
+                      className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                      placeholder="Registration Number"
                       required
                     />
                   </div>
                 </div>
 
-                {/* MEMBER COUNT SELECTOR */}
                 <div>
-                  <label className="text-xs sm:text-sm text-gray-300 mb-1 block font-semibold">
-                    Number of Team Members
-                  </label>
+                  <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Name</label>
                   <div className="relative">
-                    <Users className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 pointer-events-none" />
-                    <select
-                      value={memberCount}
-                      onChange={(e) => handleMemberCountChange(Number(e.target.value))}
-                      className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-purple-500 transition text-sm sm:text-base appearance-none"
-                    >
-                      <option value={2}>2 members (Team Leader + 1)</option>
-                      <option value={3}>3 members (Team Leader + 2)</option>
-                      <option value={4}>4 members (Team Leader + 3)</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-3.5 w-4 h-4 text-gray-400 pointer-events-none" />
+                    <User className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                    <input
+                      value={leader.name}
+                      onChange={(e) => updateLeader("name", e.target.value)}
+                      className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                      placeholder="Name"
+                      required
+                    />
                   </div>
                 </div>
-              </>
-            )}
 
-            {/* LEADER / INDIVIDUAL SECTION */}
-            <div>
-              <h3 className="text-sm md:text-base font-semibold text-cyan-300 mb-4 flex items-center gap-2">
-                {mode === "team" ? "Team Leader Details" : "Your Details"}
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {[
-                  ["registration_number", "Registration Number", User, 9],
-                  ["name", "Name", User],
-                  ["email", "Email", Mail],
-                  ["phone", "Phone", Phone, 10],
-                ].map(([key, label, Icon, max]) => (
-                  <div key={key as string}>
-                    <label className="text-xs sm:text-sm text-gray-300 mb-1 block">{label}</label>
-                    <div className="relative">
-                      <Icon className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
-                      <input
-                        value={(leader as any)[key]}
-                        onChange={(e) => updateLeader(key as any, e.target.value)}
-                        maxLength={max as any}
-                        className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-purple-500 transition text-sm sm:text-base"
-                        required
-                      />
-                    </div>
+                <div>
+                  <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                    <input
+                      value={leader.email}
+                      onChange={(e) => updateLeader("email", e.target.value)}
+                      className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                      placeholder="Email"
+                      required
+                    />
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Phone</label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                    <input
+                      value={leader.phone}
+                      onChange={(e) => updateLeader("phone", e.target.value)}
+                      maxLength={10}
+                      className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                      placeholder="Phone"
+                      required
+                    />
+                  </div>
+                </div>
 
                 <div>
                   <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Hostel Block</label>
                   <div className="relative">
-                    <Home className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-orange-400 pointer-events-none" />
+                    <Home className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 pointer-events-none" />
                     <select
                       value={leader.hostel_block}
                       onChange={(e) => updateLeader("hostel_block", e.target.value)}
-                      className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-purple-500 transition text-sm sm:text-base appearance-none"
+                      className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base appearance-none"
                       required
                     >
                       <option value="">Select block</option>
@@ -342,49 +368,86 @@ export default function RegisterPage() {
                   <input
                     value={leader.room_no}
                     onChange={(e) => updateLeader("room_no", e.target.value)}
-                    className="w-full bg-black border border-cyan-500/40 px-4 py-3 focus:outline-none focus:border-purple-500 transition text-sm sm:text-base"
+                    className="w-full bg-black border border-cyan-500/40 px-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                    placeholder="Room No"
                   />
                 </div>
               </div>
             </div>
 
             {/* OTHER MEMBERS SECTION */}
-            {mode === "team" &&
-              members.map((member, idx) => (
+            {members.map((member, idx) => (
                 <div key={idx}>
-                  <h3 className="text-sm md:text-base font-semibold text-purple-300 mb-4 flex items-center gap-2">
+                  <h3 className="text-sm md:text-base font-semibold text-cyan-300 mb-4 flex items-center gap-2">
                     Member {idx + 2} Details
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    {[
-                      ["registration_number", "Registration Number", User, 9],
-                      ["name", "Name", User],
-                      ["email", "Email", Mail],
-                      ["phone", "Phone", Phone, 10],
-                    ].map(([key, label, Icon, max]) => (
-                      <div key={key as string}>
-                        <label className="text-xs sm:text-sm text-gray-300 mb-1 block">{label}</label>
-                        <div className="relative">
-                          <Icon className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
-                          <input
-                            value={(member as any)[key]}
-                            onChange={(e) => updateMember(idx, key as any, e.target.value)}
-                            maxLength={max as any}
-                            className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-purple-500 transition text-sm sm:text-base"
-                            required
-                          />
-                        </div>
+                    <div>
+                      <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Registration Number</label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                        <input
+                          value={member.registration_number}
+                          onChange={(e) => updateMember(idx, "registration_number", e.target.value)}
+                          maxLength={9}
+                          className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                          placeholder="Registration Number"
+                          required
+                        />
                       </div>
-                    ))}
+                    </div>
+
+                    <div>
+                      <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Name</label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                        <input
+                          value={member.name}
+                          onChange={(e) => updateMember(idx, "name", e.target.value)}
+                          className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                          placeholder="Name"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Email</label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                        <input
+                          value={member.email}
+                          onChange={(e) => updateMember(idx, "email", e.target.value)}
+                          className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                          placeholder="Email"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Phone</label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400" />
+                        <input
+                          value={member.phone}
+                          onChange={(e) => updateMember(idx, "phone", e.target.value)}
+                          maxLength={10}
+                          className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                          placeholder="Phone"
+                          required
+                        />
+                      </div>
+                    </div>
 
                     <div>
                       <label className="text-xs sm:text-sm text-gray-300 mb-1 block">Hostel Block</label>
                       <div className="relative">
-                        <Home className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-orange-400 pointer-events-none" />
+                        <Home className="absolute left-3 top-3.5 w-4 h-4 sm:w-5 sm:h-5 text-cyan-400 pointer-events-none" />
                         <select
                           value={member.hostel_block}
                           onChange={(e) => updateMember(idx, "hostel_block", e.target.value)}
-                          className="w-full bg-black border border-cyan-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-purple-500 transition text-sm sm:text-base appearance-none"
+                          className="w-full bg-black border border-amber-500/40 pl-10 sm:pl-11 pr-4 py-3 focus:outline-none focus:border-amber-400 focus:shadow-[0_0_15px_rgba(251,191,36,0.2)] transition-all duration-300 text-sm sm:text-base appearance-none"
                           required
                         >
                           <option value="">Select block</option>
@@ -402,7 +465,8 @@ export default function RegisterPage() {
                       <input
                         value={member.room_no}
                         onChange={(e) => updateMember(idx, "room_no", e.target.value)}
-                        className="w-full bg-black border border-cyan-500/40 px-4 py-3 focus:outline-none focus:border-purple-500 transition text-sm sm:text-base"
+                        className="w-full bg-black border border-cyan-500/40 px-4 py-3 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] transition-all duration-300 text-sm sm:text-base"
+                        placeholder="Room No"
                       />
                     </div>
                   </div>
@@ -410,21 +474,27 @@ export default function RegisterPage() {
               ))}
 
             {error && <p className="text-red-400 text-sm text-center">{error}</p>}
-            {success && <p className="text-green-400 text-sm text-center">Registration successful!</p>}
+            {success && <p className="text-green-400 text-sm text-center">Registration successful! 🎉</p>}
 
             <div className="pt-4 sm:pt-6 text-center">
               <button
                 type="submit"
                 disabled={loading}
-                className={`${orbitron.className} inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-cyan-500 to-purple-500 uppercase tracking-wider font-bold hover:scale-105 transition text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`${orbitron.className} relative inline-flex items-center gap-2 sm:gap-3 px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-cyan-500 to-blue-500 uppercase tracking-wider font-bold hover:scale-105 transition-all duration-300 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_30px_rgba(34,211,238,0.6)] overflow-hidden group/btn text-black`}
               >
-                <Rocket className="w-4 h-4 sm:w-5 sm:h-5" />
-                {loading ? "Submitting..." : "Submit Registration"}
+                <span className="relative z-10 flex items-center gap-2 sm:gap-3">
+                  <Rocket className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover/btn:translate-y-[-2px]" />
+                  {loading ? "Submitting..." : "Register Team"}
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
               </button>
 
-              <p className="text-xs text-gray-500 mt-3 sm:mt-4">
-                Only VIT Chennai hostellers from A, C, D1 & D2 Blocks are eligible
-              </p>
+              <div className="text-xs text-gray-500 mt-4 sm:mt-6 space-y-1">
+                <p>✓ Team Size: 2-6 members (1 leader + 1-5 members)</p>
+                <p>✓ All must use @vitstudent.ac.in email</p>
+                <p>✓ All members from same hostel block</p>
+                <p>✓ Only A, C, D1 & D2 Blocks are eligible</p>
+              </div>
             </div>
           </form>
         </Card>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { adminFetch, adminDelete } from "../utils/api";
+import { adminFetch, adminDelete } from "../../../app/admin/utils/api";
 import * as XLSX from "xlsx";
 
 const HOSTEL_BLOCKS = ["All Blocks", "A Block", "C Block", "D1 Block", "D2 Block"];
@@ -12,7 +12,7 @@ export default function TeamsPage() {
   const [selectedBlock, setSelectedBlock] = useState<string>("All Blocks");
 
   useEffect(() => {
-    adminFetch("/api/admin/teams/").then((res) => setTeams(res.data));
+    adminFetch("/api/admin/teams/").then((res: any) => setTeams(res.data));
   }, []);
 
   const filteredTeams = selectedBlock === "All Blocks" 
@@ -158,51 +158,33 @@ function TeamMembers({ teamId }: { teamId: number }) {
   const [members, setMembers] = useState<any[]>([]);
 
   useEffect(() => {
-    adminFetch(`/api/admin/teams/${teamId}/`).then((res) =>
+    adminFetch(`/api/admin/teams/${teamId}/`).then((res: any) =>
       setMembers(res.data.members)
     );
   }, []);
 
   return (
     <div className="overflow-x-auto mt-3">
-  <table className="min-w-full text-sm border border-gray-700 border-collapse">
-    <thead className="text-gray-300">
-      <tr className="border-b border-gray-700">
-        <th className="px-4 py-2 text-left">Reg No</th>
-        <th className="px-4 py-2 text-left">Name</th>
-        <th className="px-4 py-2 text-left">Email</th>
-        <th className="px-4 py-2 text-left">Phone</th>
-        <th className="px-4 py-2 text-left">Room</th>
-      </tr>
-    </thead>
-
-    <tbody className="text-gray-200">
-      {members.map((m, idx) => (
-        <tr
-          key={m.id}
-          className={`border-b border-gray-700 ${
-            idx % 2 === 0 ? "bg-transparent" : "bg-gray-900/30"
-          }`}
-        >
-          <td className="px-4 py-2 whitespace-nowrap">
-            {m.registration_number}
-          </td>
-          <td className="px-4 py-2">
-            {m.name}
-          </td>
-          <td className="px-4 py-2">
-            {m.email}
-          </td>
-          <td className="px-4 py-2 whitespace-nowrap">
-            {m.phone}
-          </td>
-          <td className="px-4 py-2 ">
-            {m.room_no}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
- );
+      <table className="min-w-full text-sm">
+        <thead className="text-gray-300">
+          <tr>
+            <th>Reg No</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Room</th>
+          </tr>
+        </thead>
+        <tbody className="text-gray-200">
+          {members.map((m) => (
+            <tr key={m.id} className="border-t border-gray-700">
+              <td>{m.registration_number}</td>
+              <td>{m.name}</td>
+              <td>{m.phone}</td>
+              <td>{m.room_no}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }

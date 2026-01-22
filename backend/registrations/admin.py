@@ -1,15 +1,20 @@
 from django.contrib import admin
-from .models import IndividualRegistration, Team, TeamMember
+from .models import Team, TeamMember
 
-@admin.register(IndividualRegistration)
-class IndividualAdmin(admin.ModelAdmin):
-    list_display = ("registration_number", "name", "email", "phone", "hostel_block", "room_no", "created_at")
-    search_fields = ("registration_number", "name", "email", "phone")
-    list_filter = ("hostel_block",)
 
 class TeamMemberInline(admin.TabularInline):
     model = TeamMember
     extra = 0
+    fields = (
+        "registration_number",
+        "name",
+        "email",
+        "phone",
+        "hostel_block",
+        "room_no",
+        "is_leader",
+    )
+
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
@@ -17,6 +22,7 @@ class TeamAdmin(admin.ModelAdmin):
     inlines = [TeamMemberInline]
     search_fields = ("team_name",)
     list_filter = ("hostel_block",)
+    readonly_fields = ("created_at",)
 
 @admin.register(TeamMember)
 class TeamMemberAdmin(admin.ModelAdmin):

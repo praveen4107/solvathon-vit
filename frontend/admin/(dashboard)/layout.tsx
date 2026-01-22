@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { clearToken, getToken } from "./utils/auth";
+import { clearToken, getToken } from "../app/admin/utils/auth";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminNavLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
