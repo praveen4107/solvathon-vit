@@ -17,39 +17,81 @@ const rajdhani = Rajdhani({
 export default function Problems() {
   const problems = [
     {
-      title: "Smart Campus Navigation",
+      title: "Water Quality & Supply Management",
       code: "SVT-001",
-      category: "AR / Mobile",
+      category: "IoT / Smart Systems",
       description:
-        "Build an intelligent or AR-based solution to help students navigate hostel blocks, facilities, and common areas efficiently.",
+        "Real-time monitoring of hostel water tanks (level, quality, flow). Alert system for low levels, contamination, and anomalies. Predictive refill notifications and usage analytics dashboard.",
     },
     {
-      title: "Hostel Resource Optimizer",
+      title: "Food Wastage Minimization System",
       code: "SVT-002",
       category: "AI / Optimization",
       description:
-        "Design an AI-driven system to optimize hostel resources such as mess capacity, laundry scheduling, or maintenance workflows.",
+        "Track food prepared, served, and wasted in real-time. Predict demand using attendance and preferences. Alert on overproduction with analytics dashboard for optimized mess operations.",
     },
     {
-      title: "Eco-Hostel Challenge",
+      title: "Campus Animal Alert System",
       code: "SVT-003",
-      category: "Sustainability",
+      category: "Safety / Mobile",
       description:
-        "Propose and build sustainable solutions to reduce energy, water, and waste usage within hostel environments.",
+        "Real-time reporting and location-based alerts for animal (monkey) intrusions. Incident logging, hotspot pattern analysis, and monitoring dashboard for faster response and prevention.",
     },
     {
-      title: "Secure Entry & Monitoring",
+      title: "Happy Index - Mental Well-Being Tracker",
       code: "SVT-004",
-      category: "Cyber Security",
+      category: "Health / Privacy-First",
       description:
-        "Create a secure entry, surveillance, or anomaly-detection system to improve hostel safety and access control.",
+        "Privacy-first daily mood logging system. Trend analysis with counselor alerts for consistent low scores. Anonymized dashboard to track overall student mental well-being.",
     },
     {
-      title: "Student Productivity Suite",
+      title: "Laundry Automation & Tracking",
       code: "SVT-005",
-      category: "Developer Tools",
+      category: "Automation / Mobile",
       description:
-        "Build tools that improve student productivity, collaboration, or issue reporting inside hostel ecosystems.",
+        "Real-time laundry status tracking with online clothes tagging. Completion notifications, queue estimation, and analytics dashboard to reduce lost clothes and delays.",
+    },
+    {
+      title: "Library Attendance & Token Automation",
+      code: "SVT-006",
+      category: "Automation / Access Control",
+      description:
+        "Digital attendance via QR/RFID/app replacing manual tokens. Automated slot allocation, real-time occupancy tracking, entry/exit logs, and usage analytics dashboard.",
+    },
+    {
+      title: "Waste Classification & Management",
+      code: "SVT-007",
+      category: "Sustainability / AI",
+      description:
+        "Real-time waste classification (biodegradable/recyclable/non-recyclable). Student guidance system, improper disposal alerts, and comprehensive waste analytics dashboard.",
+    },
+    {
+      title: "Late Monitoring System",
+      code: "SVT-008",
+      category: "Management / Analytics",
+      description:
+        "Digital logging of student outing return times. Automated delay calculation, repeated lateness alerts, searchable history, and pattern analysis to optimize outing policies.",
+    },
+    {
+      title: "Restroom Water Wastage Detection",
+      code: "SVT-009",
+      category: "IoT / Sustainability",
+      description:
+        "Track water flow per restroom. Detect leaks and continuous flow. Real-time alerts for wastage, usage reports, and monitoring dashboard for maintenance teams.",
+    },
+    {
+      title: "Activity Recognition & Safety",
+      code: "SVT-010",
+      category: "AI / Security",
+      description:
+        "Real-time movement analysis in common areas. Detect unusual or unsafe behavior. Instant alerts for security, high-risk zone analytics with privacy-preserving design.",
+    },
+    {
+      title: "Room Rating & Cleanliness System",
+      code: "SVT-011",
+      category: "Feedback / Management",
+      description:
+        "Anonymous student ratings for room cleanliness. Trend analysis and alerts for consistently low-rated rooms. Authority dashboard for tracking and improving hygiene standards.",
     },
   ];
 

@@ -44,8 +44,21 @@ export default function Navbar() {
           {/* LOGO */}
           <a
             href="/"
-            className={`relative flex items-center gap-2 group ${orbitron.className}`}
+            className={`relative flex items-center gap-2 sm:gap-3 group ${orbitron.className}`}
           >
+            {/* VIT Logo */}
+            <img 
+              src="/vitlogo.svg" 
+              alt="VIT Logo" 
+              className="h-8 sm:h-10 w-auto transition-all duration-700 group-hover:scale-110"
+              style={{
+                filter: 'brightness(0) saturate(100%) invert(64%) sepia(85%) saturate(2086%) hue-rotate(157deg) brightness(101%) contrast(101%)',
+              }}
+            />
+            
+            {/* Vertical Divider */}
+            <div className="hidden xs:block h-8 sm:h-10 w-px bg-gradient-to-b from-transparent via-cyan-400 to-transparent opacity-60" />
+            
             <span
   className="
     text-sm sm:text-base font-extrabold tracking-wider

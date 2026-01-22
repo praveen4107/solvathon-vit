@@ -266,57 +266,57 @@ export default function Home() {
 
           <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
             <ThemeCard
-              title="AI & Automation"
-              description="Leverage artificial intelligence to improve hostel life and operations."
+              title="Water & Resource Management"
+              description="Smart monitoring and optimization of hostel water, food, and utilities."
               accent="from-cyan-400 to-blue-400"
               problems={[
-                "Smart complaint classification and routing",
-                "Predictive mess crowd management",
-                "Automated maintenance issue detection",
+                "Water quality & tank monitoring",
+                "Restroom water wastage detection",
+                "Food wastage minimization system",
               ]}
             />
 
             <ThemeCard
-              title="Cyber Security"
-              description="Enhance safety, privacy, and access control within hostels."
+              title="Safety & Well-Being"
+              description="Systems to improve student safety, health, and mental wellness."
               accent="from-blue-500 to-purple-400"
               problems={[
-                "Secure hostel entry system",
-                "Anomaly detection in access logs",
-                "Privacy-first surveillance solutions",
+                "Campus animal alert system",
+                "Activity recognition & safety",
+                "Happy index - mental well-being tracker",
               ]}
             />
 
             <ThemeCard
-              title="Smart Systems"
-              description="Build intelligent systems that optimize daily hostel activities."
+              title="Automation & Convenience"
+              description="Digitize and automate daily hostel operations for efficiency."
               accent="from-cyan-400 to-blue-500"
               problems={[
-                "Energy and water usage optimization",
-                "Smart room allocation system",
-                "IoT-based utility monitoring",
+                "Laundry automation & tracking",
+                "Library attendance & token system",
+                "Late monitoring & outing management",
               ]}
             />
 
             <ThemeCard
-              title="Student Productivity"
-              description="Tools that help students manage time, tasks, and collaboration."
-              accent="from-cyan-400 to-purple-400"
+              title="Sustainability & Environment"
+              description="Build eco-friendly solutions for waste and resource conservation."
+              accent="from-green-400 to-cyan-400"
               problems={[
-                "Study group coordination platform",
-                "Hostel-centric task management app",
-                "Peer learning & mentorship systems",
+                "Waste classification & management",
+                "Energy usage optimization",
+                "Smart recycling initiatives",
               ]}
             />
 
             <ThemeCard
-              title="Open Innovation"
-              description="Have an idea outside the listed domains? Build it."
-              accent="from-cyan-400 to-blue-400"
+              title="Feedback & Management"
+              description="Systems to improve hostel operations through data and feedback."
+              accent="from-purple-400 to-blue-400"
               problems={[
-                "Any impactful hostel-related solution",
-                "Cross-domain innovative ideas",
-                "Solutions improving student experience",
+                "Room rating & cleanliness system",
+                "Student feedback analytics",
+                "Maintenance request automation",
               ]}
             />
           </div>
